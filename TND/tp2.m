@@ -19,8 +19,8 @@ scatterd(b)
 % exercice 2
 distmaha(a)
 distmaha(b)
-% on ne sait pas comment savoir la meilleure paire sans essayer toutes les
-% combinaisons 
+% comment savoir la meilleure paire sans essayer toutes les
+% combinaisons ?
 
 % exercice 3
 x1 = rand(50,1) * 2

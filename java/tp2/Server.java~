@@ -1,0 +1,22 @@
+public class Server {
+
+    private static int port = 33333;
+
+    private ArrayList<Enseignant> enseignantsL;
+
+    public Server () {
+	this.initEnseignantsL();
+	try (
+	    ServerSocket serverSocket = new ServerSocket(Server.port)
+	) {
+	    Log.p("Listen on port " + Server.port);
+	}
+    }
+
+    public boolean initEnseignantsL () { this.enseignantsL = new ArrayList<Enseignant>(); return true; }
+
+    public static void main (String[] args) {
+	
+    }
+
+}
