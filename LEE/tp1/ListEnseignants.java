@@ -23,6 +23,15 @@ public class ListEnseignants extends ArrayList {
 	return new Double(sum / getList().size());
     }
 
+    public Double moyAgeSpecial () {
+	int sum = 0;
+	for (Enseignant ens : getList()) {
+	    if (ens.getAge() >= 40 && ens.getAge() <= 60 && ens.getGrade() == Grade.PU)
+		sum += ens.getAge();
+	}
+	return new Double(sum / getList().size());
+    }
+
     public void initList () { 
 	liste = new ArrayList<Enseignant>(); 
 	liste.add(new Enseignant("Kadabra", 77, 1300, Grade.MCU));
