@@ -9,10 +9,18 @@ public class ListEnseignants extends ArrayList {
     }
 
     public Enseignant searchWithNom (String nom) throws EnseignantNotFoundException {
-	for (Enseignant ens : liste)
+	for (Enseignant ens : getList())
 	    if (ens.getNom().compareToIgnoreCase(nom) == 0) 
 		return ens;
 	throw new EnseignantNotFoundException();
+    }
+
+    public Double moyAge () {
+	int sum = 0;
+	for (Enseignant ens : getList()) {
+	    sum += ens.getAge();
+	}
+	return new Double(sum / getList().size());
     }
 
     public void initList () { 

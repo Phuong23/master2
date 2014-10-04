@@ -2,8 +2,9 @@ public class RequestHandler {
 
     private ListEnseignants enseignantsL;
 
-    private static final String ASK_AGE = "ageOf";
-    private static final String LIST_ACTIONS = "help";
+    private static final String AGE = "ageOf",
+				LIST_ACTIONS = "help",
+				MOY_AGE = "moyAge";
 
     public RequestHandler () {
 	this.initEnseignantsL();	
@@ -14,14 +15,15 @@ public class RequestHandler {
 	String answer = "";
 
 	switch (requestEls[0]) {
-	    case LIST_ACTIONS : answer += "help, exit, ageOf <nom>"; break;
-	    case ASK_AGE : 
+	    case LIST_ACTIONS : answer += "help, exit, ageOf <nom>, moyAge"; break;
+	    case AGE : 
 		try { answer += getEnseignantsL().searchWithNom(requestEls[1]).getAge(); }
 		catch (EnseignantNotFoundException e) { answer += "Enseignant non trouvé."; }
 		break;
+	    case MOY_AGE : answer += getEnseignantsL().moyAge().toString(); break;
 	    default : 
 		answer += "Commande inconnue.";
-		answerTo(LIST_ACTIONS);   
+		answer += answerTo(LIST_ACTIONS);
 	}
 	return answer;
     }

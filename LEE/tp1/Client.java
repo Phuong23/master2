@@ -24,7 +24,7 @@ public class Client {
 		toServer.println(consoleInput);
 		serverInput = fromServer.readLine();
 		if (serverInput == null) break;
-		Log.p("from Server : " + serverInput);
+		Log.p(serverInput);
 	    }
 	}
 	catch (IOException e) { Log.p(e); }
