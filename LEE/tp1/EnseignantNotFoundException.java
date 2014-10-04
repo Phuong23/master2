@@ -1,0 +1,1 @@
+class EnseignantNotFoundException extends Exception {}

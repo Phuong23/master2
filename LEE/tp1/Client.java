@@ -20,14 +20,15 @@ public class Client {
 	    Log.p("Connecté !");
 	    String consoleInput, serverInput;
 	    while ((consoleInput = fromConsole.readLine()) != null) {
+		if (consoleInput.equals("exit")) { throw new InterruptedException(); }
 		toServer.println(consoleInput);
-		Log.p("to Server : " + consoleInput);
 		serverInput = fromServer.readLine();
 		if (serverInput == null) break;
 		Log.p("from Server : " + serverInput);
 	    }
 	}
 	catch (IOException e) { Log.p(e); }
+	catch (InterruptedException e) {}
     }
 
     public static void main (String[] args) {
