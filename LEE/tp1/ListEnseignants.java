@@ -8,6 +8,34 @@ public class ListEnseignants extends ArrayList {
 	initList();
     }
 
+    public void addEnseignant (String nom, String salaire, String age, String grade) throws UnknownGradeException {
+	addEnseignant(nom, new Integer(salaire), new Integer(age), GradeBuild.fromString(grade));
+    }
+    public void addEnseignant (String nom, int salaire, int age, Grade grade) {
+	liste.add(new Enseignant(nom, salaire, age, grade));
+    }
+
+    public void modEnseignant (String nomOld, String nom, String salaire, String age, String grade) throws UnknownGradeException, EnseignantNotFoundException {
+	modEnseignant(nomOld, nom, new Integer(salaire), new Integer(age), GradeBuild.fromString(grade));
+    }
+    public void modEnseignant (String nomOld, String nom, int salaire, int age, Grade grade) throws EnseignantNotFoundException {
+	Enseignant ens = searchWithNom(nomOld);
+	ens.setNom(nom);
+	ens.setSalaire(salaire);
+	ens.setGrade(grade);
+    }
+
+    public void delEnseignant (String nom) throws EnseignantNotFoundException {
+	getList().remove(searchWithNom(nom));
+    }
+
+    public String listEns () {
+	String answer = "";
+	for (Enseignant ens : getList())
+	    answer += ens.getNom() + " ";
+	return answer;
+    }
+
     public Enseignant searchWithNom (String nom) throws EnseignantNotFoundException {
 	for (Enseignant ens : getList())
 	    if (ens.getNom().compareToIgnoreCase(nom) == 0) 
