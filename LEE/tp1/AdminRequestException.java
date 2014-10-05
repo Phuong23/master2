@@ -1,0 +1,1 @@
+class AdminRequestException extends Exception {}

@@ -9,17 +9,18 @@ public class Server {
     private static final int PORT = 33333, POOL_SIZE = 10;
 
     private RequestHandler requestHandler;
-    private ExecutorService pool;
+    private ExecutorService pool, adminPool;
 
     public Server () {
 	
 	initRequestHandler();
 	initPool();
+	initAdminPool();
 	Log.p("Listen on port " + Server.PORT);
 	
 	try (ServerSocket serverSocket = new ServerSocket(Server.PORT)) {
 	    while (42 == 42) 
-		getPool().execute(new ClientHandler(serverSocket.accept(), getRequestHandler()));
+		getPool().execute(new ClientHandler(serverSocket.accept(), getRequestHandler(), getAdminPool()));
 	}
 	catch (IOException e) { getPool().shutdown(); Log.p(e); }
     } 
@@ -32,4 +33,7 @@ public class Server {
     public ExecutorService getPool () { return pool; }
     public void setPool (ExecutorService pool) { this.pool = pool; }
 
+    public void initAdminPool() { adminPool = Executors.newSingleThreadExecutor(); }
+    public ExecutorService getAdminPool () { return adminPool; }
+    public void setAdminPool (ExecutorService adminPool) { this.adminPool = adminPool; }
 }
