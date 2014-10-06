@@ -25,7 +25,7 @@ public class ClientHandler implements Runnable {
 	) {
 	    Log.p("Client " + this.toString() + " connecté !");
 	    String clientInput;
-	    while ((clientInput = fromClient.readLine()) != null)
+	    while ((clientInput = fromClient.readLine()) != null) {
 		try {
 		    toClient.println(getRequestHandler().answerTo(clientInput));
 		}
@@ -36,6 +36,7 @@ public class ClientHandler implements Runnable {
 		    catch (InterruptedException e2) { Log.p(e2); }
 		    catch (ExecutionException e2) { Log.p(e2); }
 		}
+	    }
 	    Log.p("Client " + this.toString() + " déconnecté !");
 	}
 	catch (IOException e) { Log.p(e); }

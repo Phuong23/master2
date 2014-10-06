@@ -40,9 +40,9 @@ public class ListEnseignants extends ArrayList {
     }
 
     public String listEns () {
-	String answer = "";
+	String answer = " ";
 	for (Enseignant ens : getList())
-	    answer += ens.getNom() + " ";
+	    answer += ens.getNom() + "\r\n ";
 	return answer;
     }
     
