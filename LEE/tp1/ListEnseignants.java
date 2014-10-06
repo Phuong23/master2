@@ -25,6 +25,16 @@ public class ListEnseignants extends ArrayList {
 	ens.setGrade(grade);
     }
 
+    public String getEnseignant (String nom) throws EnseignantNotFoundException {
+	Enseignant ens = searchWithNom(nom);
+	String output = 
+		  "Nom : " + ens.getNom().toString() 
+		+ " Age : " + (new Integer(ens.getAge())).toString()
+		+ " Salaire : " + (new Integer (ens.getSalaire())).toString()
+		+ " Grade : " + ens.getGrade().toString();
+	return output;
+    }
+
     public void delEnseignant (String nom) throws EnseignantNotFoundException {
 	getList().remove(searchWithNom(nom));
     }

@@ -8,22 +8,22 @@ public class RequestHandler {
 
     public String answerTo (String request) throws AdminRequestException {
 	String answer = "";
-	String[] requestEls = request.split(" ", 2);
-	String[] elements;
+	String[] elements = request.split(" ", 2);
+	String[] elements2;
 	
-	switch (requestEls[0]) {
+	switch (elements[0]) {
 	    case Config.LIST_ACTIONS : answer += Config.HELP_CONTENT; break;
 	    case Config.AGE : 
-		try { answer += getEnseignantsL().searchWithNom(requestEls[1]).getAge(); }
+		try { answer += getEnseignantsL().searchWithNom(elements[1]).getAge(); }
 		catch (EnseignantNotFoundException e) { answer += "Enseignant non trouvé."; }
 	       	break;
 	    case Config.MOY_AGE : answer += getEnseignantsL().moyAge().toString(); break;
 	    case Config.MOY_AGE_BETWEEN : 
-		elements = requestEls[1].split(" ", 2);
-		answer += getEnseignantsL().moyAgeBetweenTwoAges(elements[0], elements[1]).toString(); 
+		elements2 = elements[1].split(" ", 2);
+		answer += getEnseignantsL().moyAgeBetweenTwoAges(elements2[0], elements2[1]).toString(); 
 		break;
 	    case Config.MOY_AGE_GRADE :
-		try { answer += getEnseignantsL().moyAgeWithGrade(requestEls[1]); }
+		try { answer += getEnseignantsL().moyAgeWithGrade(elements[1]); }
 		catch (UnknownGradeException e) { answer += "Grade inconnu."; }
 		break;
 	    case Config.ADD : 
@@ -35,6 +35,10 @@ public class RequestHandler {
 		throw new AdminRequestException();
 	    case Config.DEL :
 		throw new AdminRequestException();
+	    case Config.GET :
+		try { answer += getEnseignantsL().getEnseignant(elements[1]); }
+		catch (EnseignantNotFoundException e) { answer += "Enseignant inconnu."; }
+		break;
 	    default : 
 		answer += "Commande inconnue.";
 		answer += answerTo(Config.LIST_ACTIONS);
