@@ -9,7 +9,7 @@ public class RequestHandler {
 
     public RequestHandler () {
 	this.initEnseignantsL();	
-	}
+    }
 
     public String answerTo (String request) throws AdminRequestException, ClosedClientException {
 	String answer = "";

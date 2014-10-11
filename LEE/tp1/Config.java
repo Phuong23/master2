@@ -17,4 +17,5 @@ public class Config {
 
     public static final String
 	HELP_CONTENT = " help\r\n exit\r\n ageOf <nom>\r\n moyAge\r\n moyAgeBetween <min> <max>\r\n moyAgeGrade <grade>\r\n add <nom>:<salaire>:<age>:<grade>\r\n list\r\n mod <currentName>:<name>:<salaire>:<age>:<grade>\r\n del <nom>\r\n get <nom>\r\n premier <entier>";
+
 }
