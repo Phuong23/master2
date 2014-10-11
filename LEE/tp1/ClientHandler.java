@@ -25,17 +25,21 @@ public class ClientHandler implements Runnable {
 	) {
 	    Log.p("Client " + this.toString() + " connecté !");
 	    String clientInput;
-	    while ((clientInput = fromClient.readLine()) != null)
-		try {
-		    toClient.println(getRequestHandler().answerTo(clientInput));
-		}
-	        catch (AdminRequestException e) {
+	    try {
+		while ((clientInput = fromClient.readLine()) != null) {
 		    try {
-			toClient.println(getAdminPool().submit(new AdminRequest(clientInput, getRequestHandler().getEnseignantsL())).get());
+			toClient.println(getRequestHandler().answerTo(clientInput));
 		    }
-		    catch (InterruptedException e2) { Log.p(e2); }
-		    catch (ExecutionException e2) { Log.p(e2); }
+		    catch (AdminRequestException e) {
+			try {
+			    toClient.println(getAdminPool().submit(new AdminRequest(clientInput, getRequestHandler().getEnseignantsL())).get());
+			}
+			catch (InterruptedException e2) { Log.p(e2); }
+			catch (ExecutionException e2) { Log.p(e2); }
+		    }
 		}
+	    }
+	    catch (ClosedClientException e) {}
 	    Log.p("Client " + this.toString() + " déconnecté !");
 	}
 	catch (IOException e) { Log.p(e); }

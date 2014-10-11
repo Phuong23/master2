@@ -24,7 +24,7 @@ public class Server {
 	}
 	catch (IOException e) { getPool().shutdown(); Log.p(e); }
     } 
-
+   
     public void initRequestHandler() { requestHandler = new RequestHandler(); }
     public RequestHandler getRequestHandler () { return requestHandler; }
     public void setRequestHandler (RequestHandler requestHandler) { this.requestHandler = requestHandler; }

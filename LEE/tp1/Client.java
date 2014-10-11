@@ -18,17 +18,30 @@ public class Client {
 	    BufferedReader fromConsole = new BufferedReader(new InputStreamReader(System.in))
 	) {
 	    Log.p("Connecté !");
-	    String consoleInput, serverInput;
-	    while ((consoleInput = fromConsole.readLine()) != null) {
-		if (consoleInput.equals("exit")) { throw new InterruptedException(); }
+	    String consoleInput;
+	    Thread canalServerIn = new Thread(new CanalServerIn(fromServer));
+	    canalServerIn.start();
+	    while ((consoleInput = fromConsole.readLine()) != null && canalServerIn.isAlive()) {
 		toServer.println(consoleInput);
-		serverInput = fromServer.readLine();
-		if (serverInput == null) break;
-		Log.p(serverInput);
+		if (consoleInput.equals(Config.EXIT)) { break; }
 	    }
 	}
 	catch (IOException e) { Log.p(e); }
-	catch (InterruptedException e) {}
+    }
+
+    private class CanalServerIn implements Runnable {
+	private BufferedReader fromServer; 
+	public CanalServerIn (BufferedReader fromServer) { this.fromServer = fromServer; }
+	
+	public void run () {
+	    String serverInput;
+	    try {
+		while ((serverInput = fromServer.readLine()) != null) {
+		    Log.p(serverInput);
+		}
+	    }
+	    catch (IOException e) { Log.p(e); }
+	}
     }
 
     public static void main (String[] args) {
