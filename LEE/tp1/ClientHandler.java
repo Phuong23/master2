@@ -28,7 +28,7 @@ public class ClientHandler implements Runnable {
 	    try {
 		while ((clientInput = fromClient.readLine()) != null) {
 		    try {
-			toClient.println(getRequestHandler().answerTo(clientInput));
+			getRequestHandler().answerTo(clientInput, toClient);
 		    }
 		    catch (AdminRequestException e) {
 			try {
