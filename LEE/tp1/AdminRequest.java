@@ -5,35 +5,22 @@ public class AdminRequest implements Callable<String> {
     private String input;
     private String output;
     private ListEnseignants enseignantsL;
-
+    
     public AdminRequest (String input, ListEnseignants enseignantsL) {
 	setInput(input);
 	setEnseignantsL(enseignantsL);
     }
-
+    
     public String call () {
 	String[] elements = getInput().split(" ", 2);
 	String[] elements2;
 	try {Thread.sleep(10000);}catch(InterruptedException e) { Log.p(e); }
 	switch (elements[0]) {
 	    case Config.ADD :
-		elements2 = elements[1].split(":", 4);
-		try { 
-		    getEnseignantsL().addEnseignant(elements2[0], elements2[1], elements2[2], elements2[3]); 
-		    setOutput("Enseignant ajouté.");
-		}
-		catch (UnknownGradeException e) {
-		    setOutput("Grade inconnu.");
-		}
+		add(elements[1].split(":", 4));
 		break;
 	    case Config.MOD :
-		elements2 = elements[1].split(":", 5);
-		try { 
-		    getEnseignantsL().modEnseignant(elements2[0], elements2[1], elements2[2], elements2[3], elements2[4]); 
-		    setOutput("Enseignant modifié.");
-		}
-		catch (EnseignantNotFoundException e) { setOutput("Enseignant inconnu."); }
-		catch (UnknownGradeException e) { setOutput("Grade inconnu."); }
+		mod(elements[1].split(":", 5));
 		break;
 	    case Config.DEL :
 		try {
@@ -48,7 +35,29 @@ public class AdminRequest implements Callable<String> {
 	}
 	return getOutput();
     }
+    
+    @Audit(true)
+    public void add (String[] params) {
+	GestionAudit.gestion(this, "add", String[].class);
+	try { 
+	    getEnseignantsL().addEnseignant(params[0], params[1], params[2], params[3]); 
+	    setOutput("Enseignant ajouté.");
+	}
+	catch (UnknownGradeException e) {
+	    setOutput("Grade inconnu.");
+	}
+    }
 
+    @Audit(true)
+    public void mod (String[] params) {
+	GestionAudit.gestion(this, "mod", String[].class);
+    	try { 
+	    getEnseignantsL().modEnseignant(params[0], params[1], params[2], params[3], params[4]); 
+	    setOutput("Enseignant modifié.");
+	}
+	catch (EnseignantNotFoundException e) { setOutput("Enseignant inconnu."); }
+	catch (UnknownGradeException e) { setOutput("Grade inconnu."); }
+    }
 
     private String getInput () { return input; }
     private void setInput (String input) { this.input = input; }
