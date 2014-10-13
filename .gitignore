@@ -2,3 +2,11 @@
 *.class
 *#
 .#*
+/LEE/tp2/Pierogis2/nbproject/private/
+/LEE/tp2/Pierogis2/Pierogis2-war/nbproject/private/
+/LEE/tp2/Pierogis2/Pierogis2-ejb/nbproject/private/
+/LEE/tp2/Pierogis2/Pierogis2-ejb/build/
+/LEE/tp2/Pierogis2/Pierogis2-ejb/dist/
+/LEE/tp2/Pierogis2/Pierogis2-war/build/
+/LEE/tp2/Pierogis2/Pierogis2-war/dist/
+/LEE/tp2/Pierogis2/build/
