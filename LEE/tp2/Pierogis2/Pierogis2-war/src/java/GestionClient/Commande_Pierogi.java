@@ -20,6 +20,7 @@ import javax.ejb.EJB;
 import EntityPierogi.Pierogis;
 import EntityPierogi.PierogisFacadeLocal;
 import EntityPierogi.Stocks;
+import java.util.Collection;
 
 /**
  *
@@ -54,27 +55,66 @@ public class Commande_Pierogi extends HttpServlet {
             out.println("<body>");
             List lStock = stocksFacade.findAll();
             for (Iterator it = lStock.iterator(); it.hasNext();) {
-                Pierogis elem = ((Stocks) it.next()).getPieId();
+                Stocks sto = (Stocks) it.next();
+                Pierogis elem = (sto.getPieId());
                 out.println("Type : <b>" + elem.getPieId() + " </b> ");
                 out.println("Prix : " + elem.getPiePrix() + "<br/>");
+                out.println("Quantité : " + sto.getStoQuantite() + "<br/>");
             }            
 
             out.println("<h1>Choisissez votre pierogi : </h1>");
             String type=request.getParameter("type");
             if (type!=null) {
+                
                 try {
+                   
                     int quantite = new Integer(request.getParameter("quantite"));             
                     String email = new String(request.getParameter("email"));
                     Pierogis pierogi = pierogisFacade.find(type);
                     int total = quantite * pierogi.getPiePrix();
-                    out.println("On ajoute une commande dont le prix total est :"+total+"<br/>");
-
-                    commandesFacade.create(type, quantite, total, email);
-
+                    
+                    // Récupérer la liste des stocks de ce type de pierogi
+                    Collection<Stocks> stocks = pierogi.getStocksCollection();
+                    
+                    // Calculer la somme des quantités de ces stocks
+                    int sommeQuantite = 0;
+                    for (Stocks stock : stocks) {
+                        sommeQuantite += stock.getStoQuantite();
+                    }
+                    
+                    // Vérifier par rapport à la quantité demandée par l'user
+                    if (quantite > sommeQuantite) { 
+                        out.println("stocks insuffisants. Il manque : " + (quantite - sommeQuantite));
+                    }
+                    else {
+                       // Effectuer la commande
+                       out.println("On ajoute une commande dont le prix total est :"+total+"<br/>");
+                       commandesFacade.create(type, quantite, total, email);
+                       
+                       // Quantité restante à enlever des stocks
+                       int commandeRestant = quantite;
+                       for (Stocks stock : stocks) {
+                           int stoQua = stock.getStoQuantite();
+                           // Si le stock actuel est suffisant
+                           if (stoQua > commandeRestant) {
+                               // On retire la quantité restante et on a fini
+                               stock.setStoQuantite((stoQua - commandeRestant));
+                               break;
+                           }
+                           // Sinon on vide ce stock
+                           // et on passe au stock suivant
+                           else {
+                               commandeRestant = commandeRestant - stoQua;
+                               stock.setStoQuantite(0);
+                           }
+                           stocksFacade.edit(stock);
+                       }
+                       
+                       out.println("Commande effectuée");
+                    }
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-            out.println("Commande effectuée");
             } else {
                 out.println("<form method='POST'>");
                 out.println("Type: <input type='text' name='type'><br/>");

@@ -57,7 +57,7 @@ public class Admin_Pierogi extends HttpServlet {
             }            
             String type=null;
             type=request.getParameter("type");
-            if (type!=null) {
+            if (type != null) {
                 try {
                     int prix=0;
                     prix=new Integer(request.getParameter("prix"));

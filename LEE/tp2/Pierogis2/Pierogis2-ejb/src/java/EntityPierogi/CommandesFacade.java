@@ -30,7 +30,7 @@ public class CommandesFacade extends AbstractFacade<Commandes> implements Comman
     // Antoine & Parisa
     
     public void create (String pierogiId, int quantite, int total, String email) {
-        String s = "insert into commande(pizza_id,quantite,total,email) "
+        String s = "insert into commandes(pie_id,com_quantite,com_total,com_email) "
                  + "values ('" + pierogiId + "'," + quantite + ","
                  + total + ",'" + email + "')";
         em.createNativeQuery(s).executeUpdate();
