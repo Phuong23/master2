@@ -21,6 +21,7 @@ import EntityPierogi.Pierogis;
 import EntityPierogi.PierogisFacadeLocal;
 import EntityPierogi.Stocks;
 import java.util.Collection;
+import javax.ws.rs.NotFoundException;
 
 /**
  *
@@ -53,24 +54,23 @@ public class Commande_Pierogi extends HttpServlet {
             out.println("<title>Commande Pierogi</title>");  
             out.println("</head>");
             out.println("<body>");
-            List lStock = stocksFacade.findAll();
-            for (Iterator it = lStock.iterator(); it.hasNext();) {
-                Stocks sto = (Stocks) it.next();
-                Pierogis elem = (sto.getPieId());
-                out.println("Type : <b>" + elem.getPieId() + " </b> ");
-                out.println("Prix : " + elem.getPiePrix() + "<br/>");
-                out.println("Quantité : " + sto.getStoQuantite() + "<br/>");
-            }            
+                    
 
             out.println("<h1>Choisissez votre pierogi : </h1>");
             String type=request.getParameter("type");
-            if (type!=null) {
+            if (type!=null && type != "") {
                 
                 try {
                    
                     int quantite = new Integer(request.getParameter("quantite"));             
                     String email = new String(request.getParameter("email"));
                     Pierogis pierogi = pierogisFacade.find(type);
+                    
+                    if (pierogi == null) {
+                        out.println("Mauvais type<br />");
+                        throw new NotFoundException(); 
+                    }
+                    
                     int total = quantite * pierogi.getPiePrix();
                     
                     // Récupérer la liste des stocks de ce type de pierogi
@@ -84,7 +84,7 @@ public class Commande_Pierogi extends HttpServlet {
                     
                     // Vérifier par rapport à la quantité demandée par l'user
                     if (quantite > sommeQuantite) { 
-                        out.println("stocks insuffisants. Il manque : " + (quantite - sommeQuantite));
+                        out.println("stocks insuffisants. Il manque : " + (quantite - sommeQuantite) + "<br />");
                     }
                     else {
                        // Effectuer la commande
@@ -97,20 +97,21 @@ public class Commande_Pierogi extends HttpServlet {
                            int stoQua = stock.getStoQuantite();
                            // Si le stock actuel est suffisant
                            if (stoQua > commandeRestant) {
-                               // On retire la quantité restante et on a fini
-                               stock.setStoQuantite((stoQua - commandeRestant));
-                               break;
+                                // On retire la quantité restante et on a fini
+                                stock.setStoQuantite((stoQua - commandeRestant));
+                                stocksFacade.edit(stock);
+                                break;
                            }
                            // Sinon on vide ce stock
                            // et on passe au stock suivant
                            else {
-                               commandeRestant = commandeRestant - stoQua;
-                               stock.setStoQuantite(0);
+                                commandeRestant = commandeRestant - stoQua;
+                                stock.setStoQuantite(0);
+                                stocksFacade.edit(stock);
                            }
-                           stocksFacade.edit(stock);
                        }
                        
-                       out.println("Commande effectuée");
+                       out.println("Commande effectuée !!!<br />");
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -123,6 +124,14 @@ public class Commande_Pierogi extends HttpServlet {
                 out.println("<input type='submit'><br/>");
                 out.println("</form>");
             }
+            List lStock = stocksFacade.findAll();
+            for (Iterator it = lStock.iterator(); it.hasNext();) {
+                Stocks sto = (Stocks) it.next();
+                Pierogis elem = (sto.getPieId());
+                out.println("Type : <b>" + elem.getPieId() + " </b> ");
+                out.println("Prix : " + elem.getPiePrix() + "<br/>");
+                out.println("Quantité : " + sto.getStoQuantite() + "<br/>");
+            }    
             out.println("</body>");
             out.println("</html>");
         }
