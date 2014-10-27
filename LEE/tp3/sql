@@ -1,0 +1,11 @@
+CREATE TABLE personne (
+    id int NOT NULL AUTO_INCREMENT,
+    nom varchar(20),
+    prenom varchar(20),
+    age smallint,
+    pays_id int,
+    email varchar(128),
+    texte varchar(100),
+    CONSTRAINT pk_personne PRIMARY KEY (id),
+    CONSTRAINT fk_pays FOREIGN KEY (pays_id) REFERENCES pays(id)
+);
