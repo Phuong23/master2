@@ -11,8 +11,10 @@ irisSet = dataset(randIris(:, 1:4), randIris(:, 5));
 % lablist remplace les noms des classes
 irisSet.lablist = char('setosa', 'versicolor', 'virginica');
 % on coupe
-appr = irisSet(1:100, :);
-test = irisSet(101:150, :);
+appr = irisSet(1:75, :);
+test = irisSet(76:150, :);
 % créer une fonction avec New -> Function
 lab_pred = knn_pred(appr, test);
 nne(appr, test)
+% test avec deux bases identiques (q4)
+nne(irisSet, irisSet)
