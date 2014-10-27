@@ -5,6 +5,7 @@
  */
 package GestionClient;
 
+import Antoine.SuperMail;
 import EntityPierogi.CommandesFacadeLocal;
 import EntityPierogi.StocksFacadeLocal;
 import java.io.IOException;
@@ -22,6 +23,7 @@ import EntityPierogi.PierogisFacadeLocal;
 import EntityPierogi.Stocks;
 import java.util.Collection;
 import javax.ws.rs.NotFoundException;
+import Antoine.SuperMail;
 
 /**
  *
@@ -110,6 +112,8 @@ public class Commande_Pierogi extends HttpServlet {
                                 stocksFacade.edit(stock);
                            }
                        }
+                       
+                       (new SuperMail()).sendMail("camille.vauchel@gmail.com", "Commande de Pierogis", "Commande de " + quantite + " pierogis de type : " + type + " sur le site : localhost:38879/Pierogis2-war/Commande_Pierogi.");
                        
                        out.println("Commande effectuée !!!<br />");
                     }

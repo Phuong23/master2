@@ -1,0 +1,4 @@
+rm ~/.cache/tracker -Rf
+
+du -h | grep "M"
+
