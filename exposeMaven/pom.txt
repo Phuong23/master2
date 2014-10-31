@@ -37,11 +37,13 @@ En fait, il y a un dernier élément sous le nom de <packaging> pour identifier 
 
 On y retrouve aussi une première dépendance par défaut dans la liste des dépendances, qui a été obtenue parce qu'on a créé un projet qui suivait un archetype.
 Les Archetypes sont des modèles de projet et interviennent lors de la création du projet.
-La dépendance est comme pour le projet, identifiée par un id d'artefact, de groupe et de version. Vous comprenez donc que ces trois paramètres assurent que Maven saura gérer automatiquement la dépendance, la télécharger, l'ajouter au build, etc.. Cela impose donc aussi que la dépendance aie été construite sous Maven. L'avantage est que Maven saura mieux tirer parti de la dépendance et éviter à l'utilisateur de la configuration évidente et fastidieuse.
-Le paramètre <scope> précise à quels moments de l'application la dépendance sera utilisée : à la compilation, pendant l'éxécution, etc..
 
+Pour les autres fonctionnalités paramétrées par le pom, on peut citer :
+- l'héritage qui permet à un pom d'hériter d'un autre et de surchager, d'ajouter des paramètres.
+- un projet Assembleur est un projet qui utilise des projets comme modules
+- des propriétés qui permettent l'accès à des propriétés de Maven, Java, ou du pom lui-même.
+- toute la définition de la partie Build, avec les ressources, les plugins
+- la configuration de la génération de rapports
 
+On peut évoquer un défaut du pom : il peut devenir très grand et donc être plus difficile à comprendre.
 
-On y retrouve donc les informations sur le projet en lui-même, et puis la dépendance donné par défaut qui est Junit.
-En principe, on modifie le POM dès que l'on ajoute quelque chose que Maven ne peut pas deviner, comme une nouvelle dépendance. Tant que l'on respecte les conventions données par Maven, le code à ajouter dans le POM reste synthétique.
-Regrouper toute la configuration en un endroit offre des avantages et des défauts : Elle est facile à trouver puisque tout est dans le pom, mais pour des projets conséquents la taille du pom peut devenir très grande et il peut être plus difficile à comprendre.
