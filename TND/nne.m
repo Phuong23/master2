@@ -1,6 +1,6 @@
 function [e] = nne (appr, test)
 % si les deux bases sont identiques
-if (isequal(appr, test)) 
+if (isequal(appr, test)) % LEAVE ONE OUT
     % on récupère la taille
     [l, c] = size(appr);
     % on stocke les labels
@@ -20,7 +20,7 @@ if (isequal(appr, test))
         end
     end
     e = e / l; % normaliser l'erreur
-else
+else % KNN
     test_labels_pred = knn_pred(appr, test);
     % on compare les différences
     e = nlabcmp(getlab(test), test_labels_pred) / size(test, 1);

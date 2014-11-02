@@ -12,3 +12,12 @@ glassSet = importData('Glass.data', 11);
 
 cancerSet = importData('Cancer.data', 31);
 % cancerConf = conf(cancerSet)
+
+irisSet = setlablist(irisSet, char('a', 'b', 'c'));
+fish = correct(irisSet, fisherc, 'd');
+% visualiser l'erreur (on a défini un seul type d'erreur pour faire simple,
+% mais on aurait pu aller plus loin en étant plus précis)
+scatterd(fish, 'gridded')
+
+scatterd(correct(irisSet, qdc, 'd'), 'gridded');
+
