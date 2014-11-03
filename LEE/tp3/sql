@@ -1,5 +1,16 @@
+DROP TABLE n_personnes_n_langues;
+DROP TABLE langue;
+DROP TABLE personne;
+DROP TABLE pays;
+
+CREATE TABLE pays (
+    id int NOT NULL GENERATED ALWAYS AS IDENTITY,
+    nom varchar(20),
+    CONSTRAINT pk_pays PRIMARY KEY (id)
+);
+
 CREATE TABLE personne (
-    id int NOT NULL AUTO_INCREMENT,
+    id int NOT NULL GENERATED ALWAYS AS IDENTITY,
     nom varchar(20),
     prenom varchar(20),
     age smallint,
@@ -9,3 +20,39 @@ CREATE TABLE personne (
     CONSTRAINT pk_personne PRIMARY KEY (id),
     CONSTRAINT fk_pays FOREIGN KEY (pays_id) REFERENCES pays(id)
 );
+
+CREATE TABLE langue (
+    id int NOT NULL GENERATED ALWAYS AS IDENTITY,
+    nom varchar(20),
+    CONSTRAINT pk_langue PRIMARY KEY (id)
+);
+
+CREATE TABLE n_personnes_n_langues (
+    personne_id int,
+    langue_id int,
+    CONSTRAINT pk_n_personnes_n_langues PRIMARY KEY (personne_id, langue_id)
+);
+
+INSERT INTO pays (nom) VALUES ('France');
+INSERT INTO pays (nom) VALUES ('Allemagne');
+INSERT INTO pays (nom) VALUES ('Corée du Nord');
+
+INSERT INTO langue (nom) VALUES ('Français');
+INSERT INTO langue (nom) VALUES ('Allemand');
+INSERT INTO langue (nom) VALUES ('Coréen');
+INSERT INTO langue (nom) VALUES ('Esperanto');
+
+INSERT INTO personne (nom, prenom, age, pays_id, email, texte)
+VALUES ('Kaszczyc', 'Antoine', 21, 1, 'contact@antoineka.fr', 'coucou');
+INSERT INTO personne (nom, prenom, age, pays_id, email, texte)
+VALUES ('Heichirmsstein', 'Rieichiestmrinrich', 23, 2, 'hei@ssie.de', 'sqisqijdoijqs');
+INSERT INTO personne (nom, prenom, age, pays_id, email, texte)
+VALUES ('Park Chan', 'Wit', 23, 3, 'woogwit@coolrea.cn', 'anyo anyo');
+
+INSERT INTO n_personnes_n_langues VALUES (1, 1);
+INSERT INTO n_personnes_n_langues VALUES (1, 4);
+INSERT INTO n_personnes_n_langues VALUES (2, 2);
+INSERT INTO n_personnes_n_langues VALUES (2, 4);
+INSERT INTO n_personnes_n_langues VALUES (3, 3);
+INSERT INTO n_personnes_n_langues VALUES (3, 4);
+

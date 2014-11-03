@@ -1,3 +1,6 @@
 DB Name : LinguiTrocDB
 User DB : userDB
 Pass DB : passDB
+
+JNDI name : LinguiTroc
+Package : EntityLinguiTroc
