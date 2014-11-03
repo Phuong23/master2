@@ -1,7 +1,7 @@
-function [ D2 ] = correct( D, C, L ) % Dataset M et Classifier C et Nom de labels pour les Incorrects
-% récupérer les labels prédis du classifier
-classifierLabs = labeld(D, C(D));
-% récupérer la comparaison des labels du dataset 
+function [ D2 ] = correct( D, C, L ) % Dataset D et Classifier C et Nom de labels pour les Incorrects
+% rÃ©cupÃ©rer les labels prÃ©dis du classifier
+classifierLabs = labeld(D, C(D)); 
+% rÃ©cupÃ©rer la comparaison des labels du dataset 
 labelsD = getlab(D);
 [~, correctLabs] = nlabcmp(labelsD, classifierLabs);
 s = getsize(D, 1);

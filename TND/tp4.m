@@ -15,9 +15,21 @@ cancerSet = importData('Cancer.data', 31);
 
 irisSet = setlablist(irisSet, char('a', 'b', 'c'));
 fish = correct(irisSet, fisherc, 'd');
-% visualiser l'erreur (on a dÈfini un seul type d'erreur pour faire simple,
-% mais on aurait pu aller plus loin en Ètant plus prÈcis)
+% visualiser l'erreur (on a d√©fini un seul type d'erreur pour faire simple,
+% mais on aurait pu aller plus loin en √©tant plus pr√©cis)
 scatterd(fish, 'gridded')
 
 scatterd(correct(irisSet, qdc, 'd'), 'gridded');
+scatterd(correct(irisSet, udc, 'd'), 'gridded');
+scatterd(correct(irisSet, ldc, 'd'), 'gridded');
+scatterd(correct(irisSet, nmc, 'd'), 'gridded');
+scatterd(correct(irisSet, parzenc, 'd'), 'gridded');
+scatterd(correct(irisSet, knnc, 'd'), 'gridded');
+scatterd(correct(irisSet, treec, 'd'), 'gridded');
+scatterd(correct(irisSet, svc, 'd'), 'gridded');
+% bug : scatterd(correct(irisSet, lmnc, 'd'), 'gridded');
 
+% il y a des classifieurs qui obtiennent de meilleurs r√©sultats en
+% particulier treec, parzenc, qdc, svc, udc, ldc, et d'autres moins bon,
+% comme fisherc, nmc ...
+ 

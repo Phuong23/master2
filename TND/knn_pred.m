@@ -7,7 +7,7 @@ function [lab_pred] = knn_pred(appr, test)
     % min de ça donne le plus petit de chaque colonne
     % m la valeur, j le numéro de ligne ce qui permet d'identifier
     % l'élement dans appr.
-    [m, j] = min(distm(appr, test));
+    [~, j] = min(distm(appr, test));
     % on récupère les labels de appr
     labels = getlab(appr);
     % pour chaque ligne (élément) de test
