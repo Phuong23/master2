@@ -1,0 +1,49 @@
+POM.xml est le fichier au format XML de configuration des projets Maven.
+Toute la configuration du projet est concentrée dans ce fichier.
+Il contient des informations telles que l'identifiant du projet, la version, les dépendances, la configuration des build, mais aussi la licence, la liste des développeurs etc et bien d'autres.
+
+Bien sûr, un POM est généré automatiquement lorsque l'on créé un projet maven.
+C'est l'avantage d'utiliser les commandes fournies pour la console.
+Voici un exemple d'un POM généré par défaut :
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.mycompany.app</groupId>
+  <artifactId>my-app</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.2</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+</project>
+
+On y retrouve les informations sur le projet en lui-même :
+<artifactId> représente le nom du projet. 
+<groupId> permet de rendre le nom de projet unique en lui attribuant un suffixe qui sera choisi de façon à être unique dans le monde.
+Il est suggéré de prendre le nom de domaine, exemple fr.univ-paris13.
+<version> ajoute un suffixe pour compléter le nommage. En effet le code d'un projet évolue, et tente de s'améliorer au fur et à mesure du temps. Il est pertinent de définir des versions pour identifier des moments précis dans l'évolution du projet. Cela améliore de façon simple l'organisation du projet et offre des garanties de stabilités lorsque le projet sera utilisé au sein d'autres projets. Par exemple, on peut garantir qu'une fonctionnalité est présente sous tel mécanisme et tel nom de fonction dans une version précise du projet.
+En fait, il y a un dernier élément sous le nom de <packaging> pour identifier le projet. <packaging> décrit le type de packaging, comme war ou jar.
+
+On y retrouve aussi une première dépendance par défaut dans la liste des dépendances, qui a été obtenue parce qu'on a créé un projet qui suivait un archetype.
+Les Archetypes sont des modèles de projet et interviennent lors de la création du projet.
+
+Pour les autres fonctionnalités paramétrées par le pom, on peut citer :
+- l'héritage qui permet à un pom d'hériter d'un autre et de surchager, d'ajouter des paramètres.
+- un projet Assembleur est un projet qui utilise des projets comme modules
+- des propriétés qui permettent l'accès à des propriétés de Maven, Java, ou du pom lui-même.
+- toute la définition de la partie Build, avec les ressources, les plugins
+- la configuration de la génération de rapports
+
+On peut évoquer un défaut du pom : il peut devenir très grand et donc être plus difficile à comprendre.
+

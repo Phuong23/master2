@@ -1,0 +1,46 @@
+Maven permet la gestion des dépendances.
+Cela devient vraiment intéressants dans des projets qui comportent énormément de modules et de dépendances.
+
+On peut commencer par citer la propriété transitive des dépendances dans Maven.
+Cette propriété permet d'include au projet les dépendances des dépendances du projet, et ainsi de suite.
+On peut l'expliquer simplement par : Si A a pour dépendance B, et B a pour dépendance C, alors C sera aussi inclut à A.
+On devine que le nombre de dépendances augmente rapidement ainsi Maven met à disposition quelques outils de modération,
+telles que l'interdiction d'une dépendance, une version préférée pour la dépendance (si plusieurs versions sont utilisées au sein du projet),
+la spécification de dépendances en fonction de la phase du projet (compilation, exécution, etc).
+
+La gestion des dépendances se fait bien entendu dans le POM.
+exemple :
+
+<project>
+  ...
+  <dependencies>
+  
+    <dependency>
+    
+      <groupId>group-a</groupId>
+      <artifactId>artifact-a</artifactId>
+      <version>1.0</version>
+      <scope>runtime</scope>
+      
+      <exclusions>
+        <exclusion>
+          <groupId>group-c</groupId>
+          <artifactId>excluded-artifact</artifactId>
+        </exclusion>
+      </exclusions>
+      
+    </dependency>
+	...
+	
+  </dependencies>
+</project>
+
+La dépendance est comme pour le projet, identifiée par un id d'artefact, de groupe et de version. Vous comprenez donc que ces trois paramètres assurent que Maven saura gérer automatiquement la dépendance, la télécharger, l'ajouter au build, etc.. Cela impose donc aussi que la dépendance aie été construite sous Maven. L'avantage est que Maven saura mieux tirer parti de la dépendance et éviter à l'utilisateur de la configuration évidente et fastidieuse.
+Le paramètre <scope> précise à quels moments de l'application la dépendance sera utilisée : à la compilation, pendant l'éxécution, etc..
+
+On dit que Maven télécharge les dépendances.
+Pour cela Maven utilise un repertoire appelé "local" où tous les artefacts sont stockés et partagés entre tous les projets.
+On parle aussi de répertoires "remote", cela désigne les répertoires distants, sur l'ordinateur ou sur le web, par exemple http://repo.maven.apache.org.
+Lorsqu'une dépendance n'est pas présente dans le répertoire local de son ordinateur, elle est téléchargée depuis le répertoire central de Maven.
+On peut ajouter qu'il existe un mode hors-ligne, qui va jusqu'à la désactivation, pour les plugins qui le respectent, de toutes les actions nécessitant internet.
+Pour les grandes compagnies, il est possible de créer son propre répertoire "remote". Ce qui permet d'ajouter de la sécurité puisque les dépendances ne seront plus téléchargées depuis l'extérieur, et d'y mettre des plugins qui ne seront pas accessibles depuis internet, contrairement à ceux sur le "Central Repository".
