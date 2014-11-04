@@ -1,0 +1,42 @@
+Maven utilise une arborescence précise. Cette arborescence est générée automatiquement lorsque l'on lance la commande de création d'un projet :
+
+mvn archetype:generate
+  -DarchetypeGroupId=org.apache.maven.archetypes
+  -DgroupId=fr.univ-paris13.master2
+  -DartifactId=emploiDuTempsPLS
+  
+Elle a plusieurs avantages :
+- Elle facilite l'automatisation de la configuration de Maven (on peut toujours définir des changements dans le POM, mais c'est du travail supplémentaire donc uniquement quand on est forcé)
+- Elle facilite l'arrivée d'un nouveau développeur qui connaît déjà ce type d'arborescence (il ne sera pas perdu)
+- Elle suit un modèle standard de structure de projet.
+
+Voici l'arborescence crée suite à la commande mvn :
+
+emploiDuTempsPLS
+- src
+| - main
+| | - java
+| | | - fr
+| | | | - univ-paris13
+| | | | | - master2
+| | | | | | - App.java
+| - resources
+| - test
+| | - java
+| | | - fr
+| | | | - univ-paris13
+| | | | | - master2
+| | | | | | - AppTest.java
+| | - resources
+- target
+
+Le dossier src/main/java contient les sources du projet, et src/test/java les sources de test.
+Le dossier target contient toutes les sorties (output) lors du build.
+
+Il existe aussi des dossiers pour les filtres, la configuration à l'intérieur du projet, les scripts, les applications web, les tests d'intégration,
+la documentation.
+On peut aussi citer les fichiers Licence, Notice (dépendances, etc) et Readme.
+
+On a donc deux dossiers principaux, src et target, et on accepte seulement les dossiers de metadonnées comme ceux des gestionnaires de version par exemple.
+
+Cette façon d'imposer une arborescence est caractéristique de Maven. On peut le différencier de Ant dans lequel il faut préciser les dossiers dans lesquels effectuer des actions. En clair, Maven sait déjà comment faire, tant qu'on respecte les choix par défaut.
