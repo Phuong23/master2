@@ -1,0 +1,11 @@
+Les plugins permettent l'ajout de fonctionnalités dans Maven.
+Toutes les taches dans Maven sont réalisées par des plugins.
+Chaque plugin contient des goals, des buts, exemple :
+plugin "compiler", goal "testCompile"
+Les principaux plugins sont fournis par Maven mais il est possible d'en développer soi-même.
+Un plugin se configure dans le POM de la même façon qu'un dépendance.
+Il faut bien entendu différencier les plugins et les dépendances.
+Les plugins sont des fichier Jar qui exécutent une tâche, et les dépendances
+sont des fichiers Jar qui fournissent les classes pour exécuter une tâche.
+Souvent, les plugins concernent le travail de Maven lui-même, comme la compilation.
+
