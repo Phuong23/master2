@@ -1,7 +1,7 @@
-Mon Nov 03 09:08:42 CET 2014 : Apache Derby Network Server - 10.10.1.3 - (1557168) démarré et prêt à accepter les connexions sur le port 1527
+Wed Nov 12 14:15:23 CET 2014 : Apache Derby Network Server - 10.10.1.3 - (1557168) démarré et prêt à accepter les connexions sur le port 1527
 ----------------------------------------------------------------
-Mon Nov 03 09:09:59 CET 2014:
-Amorçage de Derby version The Apache Software Foundation - Apache Derby - 10.10.1.3 - (1557168) : instance a816c00e-0149-74b2-e6fc-fffff722c823 
+Wed Nov 12 14:16:08 CET 2014:
+Amorçage de Derby version The Apache Software Foundation - Apache Derby - 10.10.1.3 - (1557168) : instance a816c00e-0149-a424-eb4b-fffff722c823 
 dans le répertoire de base de données /export/home/users/master/master2/m2pls2015/11316834/master2/LEE/tp3/.netbeans-derby/LinguiTrocDB avec le chargeur de classe sun.misc.Launcher$AppClassLoader@1d44bcfa
 Chargé de file:/usr/java/jdk-1.8/db/lib/derby.jar
 java.vendor=Oracle Corporation
@@ -12,8 +12,84 @@ os.arch=amd64
 os.version=3.2.0-4-amd64
 derby.system.home=/export/home/users/master/master2/m2pls2015/11316834/master2/LEE/tp3/.netbeans-derby
 Chargeur de classe de la base de données démarré - derby.database.classpath = ''
+Wed Nov 12 15:14:36 CET 2014 Thread[DRDAConnThread_4,5,main] (XID = 3648), (SESSIONID = 110), (DATABASE = LinguiTrocDB), (DRDAID = {56}), Cleanup action starting
+java.sql.SQLNonTransientConnectionException: Echec de l'authentification de la connexion. Cause : Authentification non valide..
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.newEmbedSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.newEmbedSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.newSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.checkUserCredentials(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.<init>(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection40.<init>(Unknown Source)
+	at org.apache.derby.jdbc.Driver40.getNewEmbedConnection(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
+	at org.apache.derby.jdbc.Driver20.connect(Unknown Source)
+	at org.apache.derby.jdbc.EmbeddedDriver.connect(Unknown Source)
+	at org.apache.derby.impl.drda.Database.makeConnection(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.getConnFromDatabaseName(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.verifyUserIdPassword(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.parseSECCHK(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.parseDRDAConnection(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.processCommands(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.run(Unknown Source)
+Caused by: java.sql.SQLException: Echec de l'authentification de la connexion. Cause : Authentification non valide..
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.wrapArgsForTransportAcrossDRDA(Unknown Source)
+	... 19 more
+============= begin nested exception, level (1) ===========
+java.sql.SQLException: Echec de l'authentification de la connexion. Cause : Authentification non valide..
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.wrapArgsForTransportAcrossDRDA(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.newEmbedSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.newEmbedSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.newSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.checkUserCredentials(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.<init>(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection40.<init>(Unknown Source)
+	at org.apache.derby.jdbc.Driver40.getNewEmbedConnection(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
+	at org.apache.derby.jdbc.Driver20.connect(Unknown Source)
+	at org.apache.derby.jdbc.EmbeddedDriver.connect(Unknown Source)
+	at org.apache.derby.impl.drda.Database.makeConnection(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.getConnFromDatabaseName(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.verifyUserIdPassword(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.parseSECCHK(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.parseDRDAConnection(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.processCommands(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.run(Unknown Source)
+============= end nested exception, level (1) ===========
+Cleanup action completed
+Wed Nov 12 15:14:36 CET 2014 Thread[DRDAConnThread_4,5,main] (DATABASE = LinguiTrocDB), (DRDAID = {56}), Echec de l'authentification de la connexion. Cause : Authentification non valide..
 ----------------------------------------------------------------
-Mon Nov 03 11:01:36 CET 2014 : fermeture du moteur Derby
+Wed Nov 12 15:22:49 CET 2014:
+Amorçage de Derby version The Apache Software Foundation - Apache Derby - 10.10.1.3 - (1557168) : instance 23ce809c-0149-a424-eb4b-fffff722c823 
+dans le répertoire de base de données /export/home/users/master/master2/m2pls2015/11316834/master2/LEE/tp3/.netbeans-derby/A avec le chargeur de classe sun.misc.Launcher$AppClassLoader@1d44bcfa
+Chargé de file:/usr/java/jdk-1.8/db/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_20-b26
+user.dir=/usr/java/jdk-1.8/db
+os.name=Linux
+os.arch=amd64
+os.version=3.2.0-4-amd64
+derby.system.home=/export/home/users/master/master2/m2pls2015/11316834/master2/LEE/tp3/.netbeans-derby
+Chargeur de classe de la base de données démarré - derby.database.classpath = ''
 ----------------------------------------------------------------
-Mon Nov 03 11:01:36 CET 2014:
-Fermeture de l'instance a816c00e-0149-74b2-e6fc-fffff722c823 sur le répertoire de base de données /export/home/users/master/master2/m2pls2015/11316834/master2/LEE/tp3/.netbeans-derby/LinguiTrocDB avec le chargeur de classe sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Wed Nov 12 15:22:50 CET 2014:
+Fermeture de l'instance 23ce809c-0149-a424-eb4b-fffff722c823 sur le répertoire de base de données /export/home/users/master/master2/m2pls2015/11316834/master2/LEE/tp3/.netbeans-derby/A avec le chargeur de classe sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Wed Nov 12 15:22:51 CET 2014 Thread[DRDAConnThread_11,5,main] (DATABASE = A), (DRDAID = {66}), Arrêt de la base de données 'A'.
+----------------------------------------------------------------
+Wed Nov 12 15:23:04 CET 2014:
+Amorçage de Derby version The Apache Software Foundation - Apache Derby - 10.10.1.3 - (1557168) : instance e7610138-0149-a424-eb4b-fffff722c823 
+dans le répertoire de base de données /export/home/users/master/master2/m2pls2015/11316834/master2/LEE/tp3/.netbeans-derby/A avec le chargeur de classe sun.misc.Launcher$AppClassLoader@1d44bcfa
+Chargé de file:/usr/java/jdk-1.8/db/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_20-b26
+user.dir=/usr/java/jdk-1.8/db
+os.name=Linux
+os.arch=amd64
+os.version=3.2.0-4-amd64
+derby.system.home=/export/home/users/master/master2/m2pls2015/11316834/master2/LEE/tp3/.netbeans-derby
+Chargeur de classe de la base de données démarré - derby.database.classpath = ''

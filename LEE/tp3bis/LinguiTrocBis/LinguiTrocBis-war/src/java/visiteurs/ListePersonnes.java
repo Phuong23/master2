@@ -5,8 +5,7 @@
  */
 package visiteurs;
 
-import EntityLinguiTrocBis.CoucouFacadeLocal;
-import EntityLinguiTrocBis.PaysFacadeLocal;
+import EntityLinguiTrocBis.PersonneFacadeLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
@@ -21,9 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ListePersonnes extends HttpServlet {
     @EJB
-    private CoucouFacadeLocal coucouFacade;
-    @EJB
-    private PaysFacadeLocal paysFacade;
+    private PersonneFacadeLocal personneFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,8 +45,7 @@ public class ListePersonnes extends HttpServlet {
             out.println("<h1>Servlet ListePersonnes at " + request.getContextPath() + "</h1>");
             
             //out.println(paysFacade.count());
-            out.println("ooo");
-            out.println(coucouFacade.find(1).getTexte());
+            out.println(personneFacade.count());
             
             out.println("</body>");
             out.println("</html>");
