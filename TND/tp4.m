@@ -17,19 +17,46 @@ irisSet = setlablist(irisSet, char('a', 'b', 'c'));
 fish = correct(irisSet, fisherc, 'd');
 % visualiser l'erreur (on a d√©fini un seul type d'erreur pour faire simple,
 % mais on aurait pu aller plus loin en √©tant plus pr√©cis)
-scatterd(fish, 'gridded')
+%scatterd(fish, 'gridded')
 
-scatterd(correct(irisSet, qdc, 'd'), 'gridded');
-scatterd(correct(irisSet, udc, 'd'), 'gridded');
-scatterd(correct(irisSet, ldc, 'd'), 'gridded');
-scatterd(correct(irisSet, nmc, 'd'), 'gridded');
-scatterd(correct(irisSet, parzenc, 'd'), 'gridded');
-scatterd(correct(irisSet, knnc, 'd'), 'gridded');
-scatterd(correct(irisSet, treec, 'd'), 'gridded');
-scatterd(correct(irisSet, svc, 'd'), 'gridded');
+%scatterd(correct(irisSet, qdc, 'd'), 'gridded');
+%scatterd(correct(irisSet, udc, 'd'), 'gridded');
+%scatterd(correct(irisSet, ldc, 'd'), 'gridded');
+%scatterd(correct(irisSet, nmc, 'd'), 'gridded');
+%scatterd(correct(irisSet, parzenc, 'd'), 'gridded');
+%scatterd(correct(irisSet, knnc, 'd'), 'gridded');
+%scatterd(correct(irisSet, treec, 'd'), 'gridded');
+%scatterd(correct(irisSet, svc, 'd'), 'gridded');
 % bug : scatterd(correct(irisSet, lmnc, 'd'), 'gridded');
 
-% il y a des classifieurs qui obtiennent de meilleurs r√©sultats en
+% il y a des classifieurs qui obtiennent de meilleurs resultats en
 % particulier treec, parzenc, qdc, svc, udc, ldc, et d'autres moins bon,
 % comme fisherc, nmc ...
- 
+
+
+% gÈnerer l'espace roc
+rocSet = dataset([
+roc(irisSet, fisherc);
+roc(irisSet, qdc);
+roc(irisSet, udc);
+roc(irisSet, ldc);
+roc(irisSet, parzenc);
+roc(irisSet, knnc);
+roc(irisSet, treec);
+roc(irisSet, svc);
+roc(irisSet, lmnc)
+], char('fisherc', 'qdc', 'udc', 'ldc', 'parzenc', 'knnc', 'treec', 'svc', 'lmnc'));
+rocSet = setfeatlab(rocSet, char('TFP', 'TVP', 'time'));
+% afficher roc
+scatterd(rocSet, 'legend');
+% afficher temps
++rocSet(:, 3)
+% le meilleur semble Ítre treec
+
+wineRoc = applyroc(wineSet);
+glassRoc = applyroc(glassSet);
+cancerRoc = applyroc(cancerSet);
+scatterd(cancerRoc, 'legend');
+% je remarque que certains classifieurs sont mauvais dans certains datasets
+% alors qu'ils Ètaient performants dans d'autres. Je remarque que treec est
+% en permanence le meilleur.
