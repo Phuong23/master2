@@ -9,7 +9,7 @@ wineSet = importData('Wine.data', 14);
 glassSet = importData('Glass.data', 11);
 % c'est très très lent donc on le met en commentaire
 % glassConf = conf(glassSet)
-
+ 
 cancerSet = importData('Cancer.data', 31);
 % cancerConf = conf(cancerSet)
 
@@ -39,12 +39,12 @@ irisRoc = applyroc(irisSet);
 % afficher roc
 scatterd(irisRoc, 'legend');
 % afficher temps
-+rocSet(:, 3)
++irisRoc(:, 3)
 % le meilleur semble etre treec
 wineRoc = applyroc(wineSet);
 glassRoc = applyroc(glassSet);
 cancerRoc = applyroc(cancerSet);
-scatterd(rocSet, 'legend');
+scatterd(irisRoc, 'legend');
 % je remarque que certains classifieurs sont mauvais dans certains datasets
 % alors qu'ils etaient performants dans d'autres. Je remarque que treec est
 % en permanence le meilleur.
