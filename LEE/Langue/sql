@@ -1,0 +1,59 @@
+DROP TABLE N_PERSONNE_N_LANGUE;
+DROP TABLE PERSONNE;
+DROP TABLE PAYS;
+DROP TABLE LANGUE;
+
+CREATE TABLE PAYS (
+    id int NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nom varchar(20)
+);
+
+CREATE TABLE LANGUE (
+    id int NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nom varchar(20)
+);
+
+CREATE TABLE PERSONNE (
+    id int NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nom varchar(20),
+    prenom varchar(20),
+    age int,
+    pays int,
+    addmail varchar(256),
+    texte varchar(100)
+);
+ALTER TABLE PERSONNE ADD FOREIGN KEY (id) REFERENCES PAYS;
+
+CREATE TABLE N_PERSONNE_N_LANGUE (
+    personne int NOT NULL,
+    langue int NOT NULL
+);
+ALTER TABLE N_PERSONNE_N_LANGUE ADD PRIMARY KEY (personne, langue);
+ALTER TABLE N_PERSONNE_N_LANGUE ADD FOREIGN KEY (personne) REFERENCES PERSONNE;
+ALTER TABLE N_PERSONNE_N_LANGUE ADD FOREIGN KEY (langue) REFERENCES LANGUE;
+
+/* DONNEES */
+
+INSERT INTO PAYS (nom) VALUES ('France');
+INSERT INTO PAYS (nom) VALUES ('Allemagne');
+INSERT INTO PAYS (nom) VALUES ('Corée du Nord');
+
+INSERT INTO LANGUE (nom) VALUES ('Français');
+INSERT INTO LANGUE (nom) VALUES ('Allemand');
+INSERT INTO LANGUE (nom) VALUES ('Coréen');
+INSERT INTO LANGUE (nom) VALUES ('Esperanto');
+
+INSERT INTO PERSONNE (nom, prenom, age, pays, addmail, texte)
+VALUES ('Kaszczyc', 'Antoine', 21, 1, 'contact@antoineka.fr', 'coucou');
+INSERT INTO PERSONNE (nom, prenom, age, pays, addmail, texte)
+VALUES ('Heichirmsstein', 'Rieichiestmrinrich', 23, 2, 'hei@ssie.de', 'sqisqijdoijqs');
+INSERT INTO PERSONNE (nom, prenom, age, pays, addmail, texte)
+VALUES ('Park Chan', 'Wit', 23, 3, 'woogwit@coolrea.cn', 'anyo anyo');
+
+INSERT INTO N_PERSONNE_N_LANGUE VALUES (1, 1);
+INSERT INTO N_PERSONNE_N_LANGUE VALUES (1, 4);
+INSERT INTO N_PERSONNE_N_LANGUE VALUES (2, 2);
+INSERT INTO N_PERSONNE_N_LANGUE VALUES (2, 4);
+INSERT INTO N_PERSONNE_N_LANGUE VALUES (3, 3);
+INSERT INTO N_PERSONNE_N_LANGUE VALUES (3, 4);
+
