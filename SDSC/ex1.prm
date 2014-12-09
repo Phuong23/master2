@@ -1,0 +1,57 @@
+mtype = {p, q};
+chan win = [0] of {int, mtype};
+chan p2q = [1] of {int};
+chan q2p = [1] of {int};
+
+init{
+	int res;
+	mtype id;
+
+	run proc_p();
+	run proc_q();
+	
+	win?res,id;
+	
+	printf("<init> winner :");
+	printm(id);
+	printf(", with number : %d\n", res);
+}
+
+proctype proc_p(){
+	int x, y;
+	
+	if
+		:: x = 0
+		:: x = 1
+		:: x = 2
+		:: x = 3
+	fi
+	
+	p2q!x;
+	q2p?y;
+
+	if
+	:: x > y -> win!x,p
+	:: else -> printf("<p> F**k off I lost.\n")
+	fi
+}
+
+proctype proc_q(){
+	int x, y;
+
+	if
+		:: x = 0
+		:: x = 1
+		:: x = 2
+		:: x = 3
+	fi
+
+	q2p!x;
+	p2q?y;
+
+	if
+	:: x > y -> win!x,q
+	:: x == y -> win!x,q
+	:: else -> printf("<q> Arrrh well played Mr Q !\n")
+	fi
+}

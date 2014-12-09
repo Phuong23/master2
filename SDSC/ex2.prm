@@ -1,0 +1,42 @@
+#define N 20
+
+mtype = {nouveau, fini};
+
+proctype filtre(int n ; chan cin) {
+    chan cout = [5] of {int, mtype};
+    bool lastCreated = true;
+    int r;
+    
+    printf("%d est premier !!\n", n);
+    
+    do
+        :: cin?r,nouveau ->
+        
+            if
+            :: (r % n) != 0 -> 
+                if
+                :: lastCreated -> lastCreated = false; run filtre(r, cout)  
+                :: else -> cout!r,nouveau
+               fi
+            :: else -> printf("%d est pas premier !\n", r)
+            fi
+            
+        :: cin?r,fini -> cout!r,fini; break
+    od
+    
+    printf("Filtre %d fini\n", n);
+    
+}
+
+init{
+    chan c = [5] of {int, mtype};
+    int i = 2;
+    run filtre(i, c);
+    
+    do
+        :: i < N -> 
+            i++;
+            c!i,nouveau;
+        :: else -> c!i,fini; break
+    od
+}
