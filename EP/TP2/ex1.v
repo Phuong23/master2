@@ -1,6 +1,9 @@
 Require Import ZArith.
 Open Scope Z_scope. (* pour utiliser les relatifs *)
-Record point:Set := point2 {x:Z ; y:Z}.
+Print Zabs.
+
+Record point:Set := point2 {
+x:Z ; y:Z}.
 Definition manhat (a:point) (b:point) :Z := match (a, b) with
 | ((point2 x1 y1), (point2 x2 y2)) => (Zabs (x1 - x2)) + (Zabs (y1 - y2))
 end.

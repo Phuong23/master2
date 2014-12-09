@@ -5,6 +5,7 @@ Print Z.
 (* donc on va faire une division binaire *)
 (* Zpos convertit un positive en en Z *)
 (* un positive est un entier naturel codé en binaire *)
+(* Pour diviser par 4 on coupe les deux binaires de droite *)
 Definition div4 (p:positive) :Z := match p with
 | xO (xO n) => Zpos n (* "xO (xO xH)" = "100" *)
 | xO (xI n) => Zpos n (* "xO (xI xH)" = "110" *)
