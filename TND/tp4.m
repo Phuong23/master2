@@ -37,7 +37,7 @@ irisSet = setlablist(irisSet, char('a', 'b', 'c'));
 % generer l'espace roc
 irisRoc = applyroc(irisSet);
 % afficher roc
-scatterd(irisRoc, 'legend');
+%scatterd(irisRoc, 'legend');
 % afficher temps
 +irisRoc(:, 3)
 % le meilleur semble etre treec

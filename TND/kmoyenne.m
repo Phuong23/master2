@@ -17,7 +17,7 @@ function [ labels ] = kmoyenne ( data, nb_cluster )
             labels(i) = i;
         end
         
-        prototypes
+        prototypes;
 
         % fonctionnement de pdist2 :
 
@@ -77,7 +77,7 @@ function [ labels ] = kmoyenne ( data, nb_cluster )
             end
         end
 
-        dataset(data, labels)
+        dataset(data, labels);
     end
     
 end

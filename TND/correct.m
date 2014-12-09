@@ -1,4 +1,4 @@
-function [ D2 ] = correct( D, C, L ) % Dataset D et Classifier C et Nom de labels pour les Incorrects
+function [ D2 ] = correct( D, C, L ) % Dataset D et Classifier C et Nom de labels L pour les incorrects
 % récupérer les labels prédis du classifier
 classifierLabs = labeld(D, C(D)); 
 % récupérer la comparaison des labels du dataset 

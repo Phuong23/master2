@@ -4,7 +4,6 @@ function [ C ] = conf( data )
     % on calcule le nombre de paires
     % nb_paires = factorial(nb_class) / (factorial(2) * factorial(nb_class - 2));
     % mais en fait ca sert a rien
-    % générer une matrice de taille nb_paires x nb_paires
     C = zeros(nb_class, nb_class);
     % comparer chaque classe deux a deux
     for i = 1:1:nb_class
