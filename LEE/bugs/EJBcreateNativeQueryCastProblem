@@ -1,0 +1,7 @@
+il faut spécifier le type ex :
+
+public List<Personne> selectPers (Integer pId) {
+        
+        List<Personne> a =  em.createNativeQuery("SELECT [...] ", Personne.class).getResultList();
+        return a;
+    }
