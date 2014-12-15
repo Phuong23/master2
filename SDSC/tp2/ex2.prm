@@ -1,0 +1,44 @@
+#define N 5
+
+mtype = {TEST, ELU};
+
+proctype process (chan cin ; chan cout ; int idLocal) {
+
+    int idAutre, qqchose;
+    cout ! TEST, idLocal;  
+
+    do
+    :: cin ? TEST, idAutre ->
+        if
+	:: (idAutre > idLocal)  -> cout ! TEST, idAutre
+	:: (idAutre == idLocal) -> cout ! ELU, idLocal
+	:: (idAutre < idLocal)  -> skip
+	fi
+    :: cin ? ELU, idAutre ->
+        if
+	:: (idAutre != idLocal) -> 
+	    printf("Je suis %d et je reconnais que %d est l'élu.\n", idLocal, idAutre) ;
+	    cout ! ELU, idAutre
+	:: else	       		-> printf("Je suis %d et je suis l'élu !\n", idLocal)
+	fi
+        break
+    od
+}
+
+init {
+
+     int i = 0;
+
+     do
+     :: (i < N) ->
+	           
+     :: else 	-> break
+     od
+ 
+     chan c1_2 = [1] of {mtype, int};
+     chan c2_3 = [1] of {mtype, int};
+     chan c3_1 = [1] of {mtype, int};
+     run process (c3_1, c1_2, 17);
+     run process (c1_2, c2_3, 89);
+     run process (c2_3, c3_1, 44);
+}

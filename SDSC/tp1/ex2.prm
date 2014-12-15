@@ -1,6 +1,8 @@
 #define N 20
 
-mtype = {nouveau, fini};
+mtype = {NOMBRE, TERMINAISON};
+
+int encours = 1;
 
 proctype filtre(int n ; chan cin) {
     chan cout = [5] of {int, mtype};
@@ -9,34 +11,43 @@ proctype filtre(int n ; chan cin) {
     
     printf("%d est premier !!\n", n);
     
+    encours = encours + 1;
+
     do
-        :: cin?r,nouveau ->
+        :: cin?r,NOMBRE ->
         
             if
             :: (r % n) != 0 -> 
                 if
                 :: lastCreated -> lastCreated = false; run filtre(r, cout)  
-                :: else -> cout!r,nouveau
+                :: else -> cout!r,NOMBRE
                fi
             :: else -> printf("%d est pas premier !\n", r)
             fi
             
-        :: cin?r,fini -> cout!r,fini; break
+        :: cin?r,TERMINAISON -> cout!r,TERMINAISON; break
     od
     
     printf("Filtre %d fini\n", n);
     
+    encours = encours - 1;
+
 }
 
 init{
-    chan c = [5] of {int, mtype};
+    chan c = [5] of {mtype, int};
     int i = 2;
     run filtre(i, c);
     
     do
         :: i < N -> 
             i++;
-            c!i,nouveau;
-        :: else -> c!i,fini; break
+            c!i,NOMBRE;
+        :: else -> c!i,TERMINAISON; break
     od
+
+    encours = encours - 1;
 }
+
+
+ltl termine {  (eventually (always (encours == 0))) }

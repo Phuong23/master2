@@ -1,0 +1,10 @@
+bit termine;
+init {
+     termine = 0;
+     do
+     :: termine = 0
+     :: !termine -> skip
+     :: termine -> break
+     od
+}
+ltl jamaisVrai { always (!termine) }
