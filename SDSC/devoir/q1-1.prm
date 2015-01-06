@@ -1,0 +1,55 @@
+proctype noeud (int valeur; bit feuille; bit racine; chan cparent; chan cgauche; chan cdroite) {
+
+    /* variables (utilisées ou non) */
+    int val_g = 0;
+    int val_d = 0;
+    int somme = 0;
+   
+    if
+    :: (feuille == 1) ->  /* si on est une feuille on envoie sa valeur au parent */
+           cparent ! valeur
+
+    :: (feuille == 0) -> /* sinon on calcule la somme */
+           cgauche ? val_g;
+	   cdroite ? val_d;
+	   somme = valeur + val_g + val_d;
+
+	   /* On envoie la somme au parent (sauf la racine) */
+	   if 
+	   :: (racine == 0) -> cparent ! somme
+	   fi
+    fi
+
+    /* On écoute et affiche le total (sauf la racine) */
+    if
+    :: (racine == 0) -> /* Ecouter et recevoir le total */
+           cparent ? somme;
+    fi
+
+
+    /* On envoie le total (sauf les feuilles) */
+    if
+    :: (feuille == 0) ->
+	   printf ("[noeud %d] : somme = %d", valeur, somme);
+           cgauche ! somme;
+	   cdroite ! somme;
+    fi
+}
+
+init {
+     chan c = [0] of {int};
+     chan c27 = [0] of {int};
+     chan c29 = [0] of {int};
+     chan c73 = [0] of {int};
+     chan c74 = [0] of {int};
+     chan c95 = [0] of {int};
+     chan c91 = [0] of {int};
+     run noeud (2,0,1,c,c27,c29);
+     run noeud (7,0,0,c27,c73,c74);
+     run noeud (9,0,0,c29,c95,c91);
+     run noeud (3,1,0,c73,c,c);
+     run noeud (4,1,0,c74,c,c);
+     run noeud (5,1,0,c95,c,c);
+     run noeud (1,1,0,c91,c,c);
+}
+
