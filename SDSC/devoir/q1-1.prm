@@ -17,6 +17,7 @@ proctype noeud (int valeur; bit feuille; bit racine; chan cparent; chan cgauche;
 	   /* On envoie la somme au parent (sauf la racine) */
 	   if 
 	   :: (racine == 0) -> cparent ! somme
+	   :: else -> skip
 	   fi
     fi
 
@@ -24,16 +25,20 @@ proctype noeud (int valeur; bit feuille; bit racine; chan cparent; chan cgauche;
     if
     :: (racine == 0) -> /* Ecouter et recevoir le total */
            cparent ? somme;
+    :: else -> skip
     fi
 
 
     /* On envoie le total (sauf les feuilles) */
     if
     :: (feuille == 0) ->
-	   printf ("[noeud %d] : somme = %d", valeur, somme);
            cgauche ! somme;
 	   cdroite ! somme;
+    :: else -> skip
     fi
+
+    /* Afficher */
+    printf ("[noeud %d] : somme = %d\n", valeur, somme);
 }
 
 init {
