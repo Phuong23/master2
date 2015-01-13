@@ -81,3 +81,53 @@ let nl13 = nth l1' 10
 let nl14 = nth l2 0
 let nl15 = nth l2 1
 *)
+
+let rec append l1 l2 =
+  match l1 with
+  | Vide -> l2
+  | Cons (x, xs) -> Cons (x, (append xs l2))
+;;
+
+let rec rev_append l1 l2 =
+  match l1 with
+  | Vide -> l2
+  | Cons (x, xs) -> rev_append xs (Cons (x, l2))
+;;
+
+let rev l = rev_append l Vide
+
+let ll = list_to_liste [ list_to_liste [1; 2]; list_to_liste [1; 2; 3]; list_to_liste [1] ]
+
+let rec concat ll = 
+  match ll with
+  | Vide -> Vide
+  | Cons (x, xs) -> append x (concat xs)
+;;
+
+let rec iter f l =
+  match l with
+  | Vide -> ()
+  | Cons (x, xs) -> let () = f x in iter f xs
+;;
+
+let l = (Cons(1,Cons(2,Cons(3,Vide))))
+
+let affiche_liste l p = iter p l
+
+let test = affiche_liste l print_int
+
+let rec map f l =
+  match l with
+  | Vide -> Vide
+  | Cons (x, xs) -> Cons(f x, map f xs)
+
+let test = map (fun x -> x + 1) l
+
+let rev_map f l =
+  let rec rev_map l lacc = 
+    match l with
+    | Vide -> lacc
+    | Cons (x, xs) -> rev_map xs (Cons (f x, lacc))
+  in rev_map l Vide
+
+let test = rev_map (fun x -> x + 1) l
