@@ -1,4 +1,10 @@
+int nbProcDemarre = 0;
+int nbProcFini = 0;
+
 proctype noeud (int valeur; bit feuille; bit racine; chan cparent; chan cgauche; chan cdroite) {
+	 
+    /* Début */
+    nbProcDemarre = nbProcDemarre + 1;    
 
     /* variables (utilisées ou non) */
     int val_g = 0;
@@ -39,6 +45,10 @@ proctype noeud (int valeur; bit feuille; bit racine; chan cparent; chan cgauche;
 
     /* Afficher */
     printf ("[noeud %d] : somme = %d\n", valeur, somme);
+
+    /* Fin */
+    nbProcFini = nbProcFini + 1;
+
 }
 
 init {
@@ -55,6 +65,9 @@ init {
      run noeud (3,1,0,c73,c,c);
      run noeud (4,1,0,c74,c,c);
      run noeud (5,1,0,c95,c,c);
-     run noeud (1,1,0,c91,c,c);
+     run noeud (1,1,0,c91,c,c);*/
 }
 
+ltl protocTermi {
+    eventually ( always ( nbProcDemarre == nbProcFini ))
+}
