@@ -1,5 +1,7 @@
 int nbProcDemarre = 0;
 int nbProcFini = 0;
+int jeConnaisSomme = 0;
+int sommeTotale = 0;
 
 proctype noeud (int valeur; bit feuille; bit racine; chan cparent; chan cgauche; chan cdroite) {
 	 
@@ -31,21 +33,23 @@ proctype noeud (int valeur; bit feuille; bit racine; chan cparent; chan cgauche;
     if
     :: (racine == 0) -> /* Ecouter et recevoir le total */
            cparent ? somme;
-    :: else -> skip
+    	   jeConnaisSomme = jeConnaisSomme + 1;
+    :: else -> 
+    	   jeConnaisSomme = jeConnaisSomme + 1; /* la racine connaît la somme évidemment */
+	   sommeTotale = somme;
     fi
-
 
     /* On envoie le total (sauf les feuilles) */
     if
     :: (feuille == 0) ->
-           cgauche ! somme;
-	   cdroite ! somme;
+           cgauche ! (somme);
+	   cdroite ! (somme);
     :: else -> skip
     fi
 
     /* Afficher */
     printf ("[noeud %d] : somme = %d\n", valeur, somme);
-
+    
     /* Fin */
     nbProcFini = nbProcFini + 1;
 
@@ -68,6 +72,20 @@ init {
      run noeud (1,1,0,c91,c,c);*/
 }
 
+/* Q.1.2 */
+
+/* P.1 : Tous les processus démarrés sont finis un jour (donc le protocole termine) */
 ltl protocTermi {
     eventually ( always ( nbProcDemarre == nbProcFini ))
 }
+
+/* P.2 : Tous les processus connaissent la somme calculée */
+ltl connaisSom {
+    eventually ( always ( nbProcDemarre == jeConnaisSomme ))
+}
+
+/* P.3 : La somme calculée est correcte */
+ltl somCorrecte {
+    eventually ( always ( sommeTotale == 31 ))
+}
+
