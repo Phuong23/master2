@@ -131,3 +131,71 @@ let rev_map f l =
   in rev_map l Vide
 
 let test = rev_map (fun x -> x + 1) l
+
+let rec for_all p l =
+  match l with 
+  | Vide -> true
+  | Cons (x, xs) ->
+      if p x
+      then for_all p xs
+      else false
+;;
+
+let test = for_all (fun x -> x > 1) l
+let test = for_all (fun x -> x = x) l
+
+let rec exists p l =
+  match l with 
+  | Vide -> false
+  | Cons (x, xs) ->
+      if p x
+      then true
+      else exists p xs
+;;
+
+let test = exists (fun x -> x > 1) l
+let test = exists (fun x -> x = x) l
+
+let rec filter p l1 =
+  match l1 with
+  | Vide -> Vide
+  | Cons (x1, xs1) ->
+      if p x1
+      then Cons (x1, filter p xs1) 
+      else filter p xs1
+;;
+
+let test = filter (fun x -> x = 1) l
+let test = filter (fun x -> x > 1) l
+
+let rec assoc a l =
+  match l with
+  | Cons ((xa, xb), xs) when xa = a -> xb
+  | Cons (_, xs) -> assoc a xs
+  | Vide -> failwith "Not Found" 
+;;
+
+let lab = (list_to_liste [('a', 0); ('b', 1); ('c', 2)])
+let test = assoc 'a' lab
+let test = assoc 'b' lab
+(* let test = assoc 'd' lab *)
+
+let rec split l =
+  match l with
+  | Cons ((xa, xb), xs) -> 
+      let (xsa, xsb) = split xs in
+      (Cons (xa, xsa), Cons (xb, xsb)) 
+  | Vide -> (Vide, Vide) 
+;;
+
+let test = split lab
+
+let rec combine la lb =
+  match (la, lb) with
+  | Cons (xa, xsa), Cons (xb, xsb) -> Cons ((xa, xb), combine xsa xsb)
+  | Vide, Vide -> Vide
+  | _ -> failwith "Invalid Argument" (* Different lengths *)
+;;
+
+let test = let la, lb = split lab in combine la lb
+
