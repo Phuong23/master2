@@ -1,0 +1,92 @@
+#define C 3
+
+mtype = {
+      SOUMISSION,
+      ANNULATION,
+      REFUS,
+      SUCCES
+};
+
+typedef tache {
+	int id;
+	int prio;
+};
+
+chan clientVersServeur = [0] of {mtype , tache};
+chan serveurVersClient[C] = [0] of {mtype, tache};
+
+proctype serveur (){
+  printf ("je suis le serveur \n");
+
+  tache tacheEnCours, tacheRecue;
+  int nbTachesEnCours = 0;
+  int temps 
+
+
+  do 
+  :: clientVersServeur ? SOUMISSION, tacheRecue ->
+       if
+       :: nbTachesEnCours == 0 -> /* si le serveur ne fait rien */
+       	    tacheEnCours.id = tacheRecue.id;
+	    tacheEnCours.prio = tacheRecue.prio;
+	    nbTachesEnCours = nbTachesEnCours + 1;
+	    printf ("Serveur : je ne faisais rien et je commence %d\n", tacheEnCours.prio);
+       :: nbTachesEnCours > 0 ->
+            if
+     	    :: tacheEnCours.prio < tacheRecue.prio ->
+                 /* Il faut annuler en cours et traiter recue */
+	    	 serveurVersClient[tacheEnCours.id] ! ANNULATION, tacheEnCours;
+		 printf("Serveur : je faisais %d mais je vais plutôt faire %d", tacheEnCours.id, tacheRecue.id);
+       	    	 tacheEnCours.id = tacheRecue.id;	    
+	    	 tacheEnCours.prio = tacheRecue.prio;
+	    	 skip;
+     	    :: tacheEnCours.prio >= tacheRecue.prio ->
+     	         /* On refuse la recue et on continue la en cours */
+		 serveurVersClient[tacheRecue.id] ! REFUS, tacheRecue;
+		 printf ("Serveur: je faisais %d, j'ai refusé %d", tacheEnCours.id, tacheRecue.id);
+		 skip;
+            fi
+       fi
+       skip;
+  :: nbTachesEnCours > 0 ->
+       /* On termine la tache en cours */
+       serveurVersClient[tacheEnCours.id] ! SUCCES, tacheEnCours;
+       nbTachesEnCours = nbTachesEnCours - 1;
+       skip;
+  od
+  printf("serveur fini \n");
+}
+
+proctype client (tache t) {
+
+  printf ("je suis le client %d \n", t.id);
+  tache t2;
+
+  do
+  :: clientVersServeur ! SOUMISSION, t ->
+     if
+     :: serveurVersClient[t.id] ? SUCCES, t2 -> break;
+     :: serveurVersClient[t.id] ? ANNULATION, t2 -> 
+     	  printf ("<Client %d> Ma tâche a été annulée :(\n", t.id);
+	  skip;
+     :: serveurVersClient[t.id] ? REFUS, t2 -> 
+     	  /*printf ("<Client %d> Ma tâche a été refusée :(\n", t.id);*/
+	  skip;
+     fi
+  od
+  printf ("je suis fini %d \n", t.id);
+}
+
+init {
+
+     tache t0, t1, t2;
+     t0.id = 0; t0.prio = 0;
+     t1.id = 1; t1.prio = 1;
+     t2.id = 2; t2.prio = 2;
+
+     run serveur();
+     run client(t0);
+     run client(t1);
+     run client(t2);
+
+}

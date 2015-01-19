@@ -2,6 +2,7 @@ int nbProcDemarre = 0;
 int nbProcFini = 0;
 int jeConnaisSomme = 0;
 int sommeTotale = 0;
+int nbMesRecus = 0;
 
 proctype noeud (int valeur; bit feuille; bit racine; chan cparent; chan cgauche; chan cdroite) {
 	 
@@ -18,8 +19,8 @@ proctype noeud (int valeur; bit feuille; bit racine; chan cparent; chan cgauche;
            cparent ! valeur
 
     :: (feuille == 0) -> /* sinon on calcule la somme */
-           cgauche ? val_g;
-	   cdroite ? val_d;
+           cgauche ? val_g; nbMesRecus = nbMesRecus + 1;
+	   cdroite ? val_d; nbMesRecus = nbMesRecus + 1;
 	   somme = valeur + val_g + val_d;
 
 	   /* On envoie la somme au parent (sauf la racine) */
@@ -32,7 +33,7 @@ proctype noeud (int valeur; bit feuille; bit racine; chan cparent; chan cgauche;
     /* On écoute et affiche le total (sauf la racine) */
     if
     :: (racine == 0) -> /* Ecouter et recevoir le total */
-           cparent ? somme;
+           cparent ? somme; nbMesRecus = nbMesRecus + 1;
     	   jeConnaisSomme = jeConnaisSomme + 1;
     :: else -> 
     	   jeConnaisSomme = jeConnaisSomme + 1; /* la racine connaît la somme évidemment */
@@ -89,3 +90,13 @@ ltl somCorrecte {
     eventually ( always ( sommeTotale == 31 ))
 }
 
+/* Q 1.3 */
+/*
+Le nombre de messages échangés est égal au nombre de messages reçus.
+Qui est de 2n - 2.
+*/
+
+/* P4 */
+ltl borne {
+    eventually ( always ( nbMesRecus <= ((2 * 7) - 2) ))
+}
