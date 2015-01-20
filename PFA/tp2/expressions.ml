@@ -140,6 +140,8 @@ let test = eval_expr e3
       partie 3.
 *)
 
+(*
+
 type expr =
     Entier of int
   | Reel of float
@@ -230,13 +232,34 @@ let test = vars e2
 let test = vars e3
 
 
-
 type env = (string * expr) list
 (*  Question 8. Décommenter et compléter   *)
-(*
-let rec eval_expr (env:env) =
+
+let eval_expr (env:env) expr =
+  let rec eval_expr expr =
+    match expr with
+    | Somme (l, r) -> (eval_expr l) +. (eval_expr r)
+    | Mult  (l, r) -> (eval_expr l) *. (eval_expr r)
+    | Entier x     -> float_of_int x
+    | Reel   x     -> x
+    | Var    v     -> eval_expr (List.assoc v env) 
+  in
+  eval_expr expr
 (* le "(env:env)" force le type à etre env et pas "string*int list". *)
-*)
+
+let env1 = [("x", Entier 1); ("y", Somme (Entier 1, Reel 3.2)) ]
+let test = eval_expr env1 e0
+let test = eval_expr env1 e1
+let test = eval_expr env1 e2
+let test = eval_expr env1 e3
+
+let env2 = [("y", Entier 2); ("x", Somme (Var "x", Var "x"))]
+let test = eval_expr env2 e0
+let test = eval_expr env2 e1
+let test = eval_expr env2 e2
+let test = eval_expr env2 e3
+
+
 
 (**************   Exemples partie 3   *******************)
 let e0 = string_to_expr "5+1.2"
@@ -253,14 +276,19 @@ let _ = eval_expr ["x",Reel 2.98] e3
 let _ = eval_expr ["y",Entier 0] e3  (* doit provoquer une erreur *)
 *)
 
+
+*)
+
+
 (*************    Fin Partie 3    ***********************)
 
 (************     Début partie 4  ***********************)
-(*
+
 (*    Commenter tout ce qui est au dessus et décommenter le code de la
       partie 4.
 *)
 
+(*
 
 type expr =
     Entier of int
@@ -331,15 +359,67 @@ let string_to_expr s = parse (stream_to_list (lexer (Stream.of_string s)))
 (****************************************************************)
 
 
-
 (**************   Exemples partie 4   *******************)
 let e0 = string_to_expr "5+1.2"
 let e1 = string_to_expr "Soit x=3 dans (2*x)" (* parenthèses obligatoires *)
 let e2 = string_to_expr "Soit x = 1.3 dans soit y=42 dans ((2*x)+y)"
 let e3 = string_to_expr "Soit x=1 dans (x+x)+4"
 let e4 = string_to_expr "(Soit x=14 dans x)+(2*x)"
+let e5 = string_to_expr "x + y"
+let e6 = string_to_expr "Soit x=3 dans soit y=(x*x) dans soit x = 4 dans (y + 2)"
+
+let rec free_vars expr =
+  match expr with
+  | Entier x -> []
+  | Reel   x -> []
+  | Var    v -> v::[]
+  | Somme (l, r) | Mult (l, r) -> (free_vars l) @ (free_vars r)
+  | Def   (v, e1, e2) -> 
+      let free_vars_e2 = List.filter (fun z -> (compare z v) != 0) (free_vars e2) in
+      (free_vars e1) @ free_vars_e2
+
+let test = free_vars e0
+let test = free_vars e1
+let test = free_vars e2
+let test = free_vars e3
+let test = free_vars e4
+let test = free_vars e5
+
+type env = (string * expr) list
+
+let eval_expr e =
+  let rec eval_expr (env:env) e =
+    match e with
+    | Entier x -> float_of_int x
+    | Reel   x -> x
+    | Var    v -> eval_expr env (List.assoc v env)
+    | Somme (l, r)  -> (eval_expr env l) +. (eval_expr env r)
+    | Mult  (l, r)  -> (eval_expr env l) *. (eval_expr env r)
+    | Def   (v, e1, e2) -> 
+        let eval_e1 = eval_expr env e1 in
+	eval_expr ((v, Reel eval_e1)::env) e2
+  in
+  eval_expr ([]:env) e
+
+let test = eval_expr e0
+let test = eval_expr e1
+let test = eval_expr e2
+let test = eval_expr e3
+let test = eval_expr e4
+let test = eval_expr e5
+let test = eval_expr e6
+
+let e0 = string_to_expr "5+1.2"
+let e1 = string_to_expr "Soit x=3 dans (2*x)" (* parenthèses obligatoires *)
+let e2 = string_to_expr "Soit x = 1.3 dans soit y=42 dans ((2*x)+y)"
+let e3 = string_to_expr "Soit x=1 dans (x+x)+4"
+let e4 = string_to_expr "(Soit x=14 dans x)+(2*x)"
+let e5 = string_to_expr "x + y"
+
   (* erreur à l'évaluation car x est libre*)
-  *)
+  
+*)
+
 (*************    Fin Partie 4    ***********************)
 
 (************     Début partie 5  ***********************)
@@ -348,7 +428,7 @@ let e4 = string_to_expr "(Soit x=14 dans x)+(2*x)"
       partie 5.
 *)
 
-(*
+
 (* Le code de la partie 5 sera presque entièrement repris dans le projet
    (évaluateur d'un mini-Caml) *)
 
@@ -454,4 +534,27 @@ let e6 = string_to_expr "Soit x=((2.4+3)>5) dans non (x ou faux)"
 let e7 = string_to_expr "1=faux" 
   (* erreur de type donc erreur à l'évaluation car on nevérifie pas
      encore les types pour le moment *)
-  *)
+
+let eval_expr e =
+  let eval_val v = 
+    match v with
+    | Entier x    -> float_of_int x
+    | Reel   x    -> x
+    | Booleen   b -> b
+  in
+  let rec eval_expr (env:env) e =
+    match e with
+    | Val    vl     -> eval_val vl
+    | Var    v      -> eval_expr env (List.assoc v env)
+    | Somme (l, r)  -> (eval_expr env l) +. (eval_expr env r)
+    | Mult  (l, r)  -> (eval_expr env l) *. (eval_expr env r)
+    | Non    e      -> not (eval_expr e)
+    | Ou    (l, r)  -> (eval_expr l) || (eval_expr r)
+    | Et    (l, r)  -> (eval_expr l) && (eval_expr r)
+    | Egal  (l, r)  -> (compare l r) == 0
+    | PlusGrand (l, r) -> (compare l r) > 0
+    | Def   (v, e1, e2) -> 
+        let eval_e1 = eval_expr env e1 in
+	eval_expr ((v, Val eval_e1)::env) e2
+  in
+  eval_expr ([]:env) e
