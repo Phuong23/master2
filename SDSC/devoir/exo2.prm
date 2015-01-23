@@ -1,5 +1,9 @@
 #define C 3
 
+int nbTachesDifferentes = 0;
+int nbSuccesTachePrio2 = 0;
+int nbSuccesTachesPrio0ou1 = 0;
+
 mtype = {
       SOUMISSION,
       ANNULATION,
@@ -20,8 +24,6 @@ proctype serveur (){
 
   tache tacheEnCours, tacheRecue;
   int nbTachesEnCours = 0;
-  int temps 
-
 
   do 
   :: clientVersServeur ? SOUMISSION, tacheRecue ->
@@ -36,20 +38,19 @@ proctype serveur (){
      	    :: tacheEnCours.prio < tacheRecue.prio ->
                  /* Il faut annuler en cours et traiter recue */
 	    	 serveurVersClient[tacheEnCours.id] ! ANNULATION, tacheEnCours;
-		 printf("Serveur : je faisais %d mais je vais plutôt faire %d", tacheEnCours.id, tacheRecue.id);
+		 printf("Serveur : je faisais %d mais je vais plutôt faire %d\n", tacheEnCours.id, tacheRecue.id);
        	    	 tacheEnCours.id = tacheRecue.id;	    
 	    	 tacheEnCours.prio = tacheRecue.prio;
 	    	 skip;
      	    :: tacheEnCours.prio >= tacheRecue.prio ->
      	         /* On refuse la recue et on continue la en cours */
 		 serveurVersClient[tacheRecue.id] ! REFUS, tacheRecue;
-		 printf ("Serveur: je faisais %d, j'ai refusé %d", tacheEnCours.id, tacheRecue.id);
+		 printf ("Serveur: je faisais %d, j'ai refusé %d\n", tacheEnCours.id, tacheRecue.id);
 		 skip;
             fi
        fi
        skip;
   :: nbTachesEnCours > 0 ->
-       /* On termine la tache en cours */
        serveurVersClient[tacheEnCours.id] ! SUCCES, tacheEnCours;
        nbTachesEnCours = nbTachesEnCours - 1;
        skip;
@@ -65,12 +66,30 @@ proctype client (tache t) {
   do
   :: clientVersServeur ! SOUMISSION, t ->
      if
-     :: serveurVersClient[t.id] ? SUCCES, t2 -> break;
+     :: serveurVersClient[t.id] ? SUCCES, t2 ->
+     	   if
+	   :: t.prio == 2 -> nbSuccesTachePrio2 = nbSuccesTachePrio2 + 1
+	   :: else -> nbSuccesTachesPrio0ou1 = nbSuccesTachesPrio0ou1 + 1
+	   fi
+
+           if
+           :: t2.id != t.id -> nbTachesDifferentes = nbTachesDifferentes + 1; 
+	   :: else -> skip
+	   fi;
+	   break;
      :: serveurVersClient[t.id] ? ANNULATION, t2 -> 
+     	   if
+           :: t2.id != t.id -> nbTachesDifferentes = nbTachesDifferentes + 1; 
+	   :: else -> skip
+	   fi;
      	  printf ("<Client %d> Ma tâche a été annulée :(\n", t.id);
 	  skip;
      :: serveurVersClient[t.id] ? REFUS, t2 -> 
      	  /*printf ("<Client %d> Ma tâche a été refusée :(\n", t.id);*/
+	   if
+           :: t2.id != t.id -> nbTachesDifferentes = nbTachesDifferentes + 1; 
+	   :: else -> skip
+	   fi; 
 	  skip;
      fi
   od
@@ -90,3 +109,34 @@ init {
      run client(t2);
 
 }
+
+/*
+ltl pasTachesDifferentes {
+    always (nbTachesDifferentes == 0)
+}
+*/
+
+/*
+CA FONTIONNE PAS PARCE QUE :
+Le serveur peut recevoir et répondre aux messages à l'infini au lieu d'envoyer le message de succès.
+C'est parce qu'on a respecté la règle "A tout moment la tâche peut se terminer".
+Nous n'avons pas trouvé de solution pour répondre aussi à la règle "La tâche 2 se terminera un jour".
+Sauf la solution de la borne (Entier naturel) pour dire "à un moment, on envoie le succès au lieu de répondre les refus" mais
+cela brise la règle de "à tout moment la tâche peut terminer".
+Il aurait sinon fallu, à chaque fois, avant de répondre un refus, vérifier encore que la tâche n'est pas terminée.
+Mais nous n'avons pas réussi à l'implémenter.
+*/
+
+
+ltl succesPrio2 {
+    eventually (always ( nbSuccesTachePrio2 == 1 ))
+}
+
+/*
+
+Faux aussi pour les mêmes raisons que précédentes
+
+ltl infiniRefus {
+    eventually (always ( nbSuccesTachesPrio0ou1 == 0 ))
+}
+*/
